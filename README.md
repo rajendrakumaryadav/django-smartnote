@@ -1,1 +1,2 @@
-# django-smartnote
+## Django - Smart Notes App
+- Simple Notes App
