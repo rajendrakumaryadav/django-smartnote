@@ -1,12 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>{{ title }}</title>
-</head>
-<body>
-<h3>Note :: Home Page</h3>
-<hr>
-<p>Server Time : {{ now }}</p>
-</body>
-</html>
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="my-5 text-center ">
+        <h1>Note :: Home Page</h1>
+        <p>Server Time : {{ now }}</p>
+    </div>
+    <div class="my-3 text-center">
+        <a class="btn btn-secondary" href="{% url 'list_notes' %}">List of SmartNotes</a>
+    </div>
+{% endblock %}
