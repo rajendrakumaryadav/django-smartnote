@@ -4,11 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <title>{% block title %} {% endblock %}</title>
-    <meta name="viewport" content="width=100, initial-scale=1" />
+    <meta name="viewport" content="width=100, initial-scale=1"/>
     <!-- CSS only -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi"
           crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
 <div class="container-fluid">
@@ -23,6 +24,16 @@
             {% block content %}
             {% endblock %}
         </div>
+    </div>
+    {% if request.path != "/" %}
+        <div class="text-center">
+            <a href="{% url 'home' %}" class="btn btn-primary">Home</a>
+        </div>
+    {% endif %}
+    {% if request.path != '/notes/new' %}
+        <div class="text-center mt-3">
+        <a href="{% url 'new_note' %}" class="btn btn-primary">Add New Note</a>
+    {% endif %}
     </div>
 </div>
 

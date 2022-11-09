@@ -7,3 +7,11 @@
     content: " (Already viewed)";
     color: red;
 }
+
+h3, h2, h1, h4, h5, h6 {
+    font-family: 'Academy Engraved LET';
+}
+
+.errorlist {
+    display: none;
+}

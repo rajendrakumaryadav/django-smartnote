@@ -7,17 +7,21 @@
 
 {# Title of the Page #}
 {% block page-title %}
-    <h3 class="text-center my-4">{{ note.title }}</h3>
+    <h3 class="text-center mt-5 mb-0">{{ note.title }}</h3>
+    <div class="text-center">
+        <a class="btn btn-warning" href="{% url "edit_note" pk=note.id %}">Edit</a>
+        <a class="btn btn-danger" href="{% url "delete_note" pk=note.id %}">Delete</a>
+    </div>
 {% endblock %}
 
 {# Content area in the page #}
 {% block content %}
-    <div class="my-1 mx-5">
+    <div class="my-1 mx-2">
         <div class="row">
             <div class="col-3"></div>
             <div class="col-6 mt-3 border rounded border-dark">
-                <div class="my-1 mx-2">
-                    <h1 class="text-center">{{ note.title }}</h1>
+                <div class=" mt-4">
+                    <h4 class="text-center">{{ note.title }}</h4>
                     <hr/>
                     <p>{{ note.content }}</p>
                 </div>

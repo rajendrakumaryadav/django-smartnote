@@ -3,11 +3,11 @@
 {% block content %}
     <div class="row my-5 mx-5 text-center">
         {% for note in notes %}
-            <div class="col-3 border mx-5 rounded">
+            <div class="col-3 mt-4 border mx-5 rounded">
                 <h3 class="my-2" style="text-underline-offset: 10px;">
                     <a href="{% url 'note_detail' pk=note.id %}">{{ note.title }}</a>
                 </h3>
-                <p class="text">{{ note.content | truncatechars:50 }} </p>
+                <p class="text">{{ note.content | truncatechars:80 }} </p>
             </div>
         {% endfor %}
     </div>
