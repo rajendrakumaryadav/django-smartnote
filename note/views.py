@@ -1,15 +1,44 @@
 from datetime import datetime
 
+from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.models import User
+from django.http import HttpResponseRedirect
 from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.contrib.auth.views import LoginView, LogoutView
+from django.views.generic.edit import CreateView
+from django.shortcuts import redirect
 
 from . import models
 from .forms import NoteForm
 
 
 # Create your views here.
+class SignUpView(CreateView):
+    from_class = UserCreationForm
+    template_name = "signup.html"
+    success_url = '/notes'
 
-# TODO: Add User Authentication
+    def get(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return redirect('/notes')
+        return super().get(request, *args, **kwargs)
+
+
+class LogoutInterfaceView(LogoutView):
+    template_name = 'logout.html'
+
+
+class LoginInterfaceView(LoginView):
+    template_name = "login.html"
+    redirect_authenticated_user = True
+    fields = "__all__"
+    redirect_field_name = "redirect_to"
+    success_url = "/notes"
+
+    def get_success_url(self):
+        return self.success_url
+
 
 class HomeView(TemplateView):
     template_name = 'note/index.html'
@@ -22,34 +51,42 @@ class AuthorizedView(LoginRequiredMixin, TemplateView):
     login_url = '/admin'
 
 
-class NoteCreateView(CreateView):
+class NoteCreateView(LoginRequiredMixin, CreateView):
     model = models.Note
     form_class = NoteForm
     template_name = 'note/note-form.html'
     success_url = '/notes'
 
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
 
-class NoteDeleteView(DeleteView):
+
+class NoteDeleteView(LoginRequiredMixin, DeleteView):
     model = models.Note
     success_url = '/notes'
     template_name = 'note/note_delete.html'
 
 
-class NoteUpdateView(UpdateView):
+class NoteUpdateView(LoginRequiredMixin, UpdateView):
     model = models.Note
     form_class = NoteForm
     template_name = 'note/note-form.html'
     success_url = '/notes'
 
 
-class ListNotes(ListView):
+class ListNotes(LoginRequiredMixin, ListView):
     model = models.Note
     template_name = 'note/note_lists.html'
     context_object_name = 'notes'
     extra_context = {"title": "List of Notes"}
 
+    def get_queryset(self):
+        # select all notes of login user
+        return self.request.user.notes.all()
 
-class NoteDetail(DetailView):
+
+class NoteDetail(LoginRequiredMixin, DetailView):
     model = models.Note
     template_name = 'note/note_detail.html'
     context_object_name = 'note'
