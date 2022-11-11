@@ -10,13 +10,13 @@ from django.views.generic.edit import CreateView
 from django.shortcuts import redirect
 
 from . import models
-from .forms import NoteForm
+from .forms import NoteForm, SignupForm
 
 
 # Create your views here.
 class SignUpView(CreateView):
-    from_class = UserCreationForm
     template_name = "signup.html"
+    form_class = SignupForm
     success_url = '/notes'
 
     def get(self, request, *args, **kwargs):
@@ -41,7 +41,7 @@ class LoginInterfaceView(LoginView):
 
 
 class HomeView(TemplateView):
-    template_name = 'note/index.html'
+    template_name = 'index.html'
     extra_context = {"now": datetime.now(), "title": "Home"}
 
 
@@ -74,6 +74,14 @@ class NoteUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'note/note-form.html'
     success_url = '/notes'
 
+    def get(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return super().get(request, *args, **kwargs)
+        return redirect('/notes')
+
+    def get_queryset(self):
+        return self.model.objects.filter(user=self.request.user)
+
 
 class ListNotes(LoginRequiredMixin, ListView):
     model = models.Note
@@ -91,3 +99,7 @@ class NoteDetail(LoginRequiredMixin, DetailView):
     template_name = 'note/note_detail.html'
     context_object_name = 'note'
     extra_context = {"title": "Note Detail"}
+
+    def get_queryset(self):
+        # if self.request.user == self.get_object().user:
+        return models.Note.objects.filter(user=self.request.user)

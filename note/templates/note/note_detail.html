@@ -8,10 +8,6 @@
 {# Title of the Page #}
 {% block page-title %}
     <h3 class="text-center mt-5 mb-0">{{ note.title }}</h3>
-    <div class="text-center">
-        <a class="btn btn-warning" href="{% url "edit_note" pk=note.id %}">Edit</a>
-        <a class="btn btn-danger" href="{% url "delete_note" pk=note.id %}">Delete</a>
-    </div>
 {% endblock %}
 
 {# Content area in the page #}
@@ -28,5 +24,9 @@
             </div>
             <div class="col-3"></div>
         </div>
+    </div>
+    <div class="text-center mt-3">
+        <a class="btn btn-warning" href="{% url "edit_note" pk=note.id %}">Edit</a>
+        <a class="btn btn-danger" href="{% url "delete_note" pk=note.id %}">Delete</a>
     </div>
 {% endblock %}

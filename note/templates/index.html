@@ -11,9 +11,11 @@
 {% block content %}
     <div class="my-5 text-center ">
         <h1 style="font-family: 'Academy Engraved LET';">Note :: Home Page</h1>
-        <p style="font-family: 'Academy Engraved LET'; size: 20px;">Server Time : {{ now }}</p>
+        <p style="font-family: 'Academy Engraved LET',serif; size: 20px;">Server Time : {{ now }}</p>
     </div>
-    <div class="my-3 text-center">
-        <a class="btn btn-secondary" href="{% url 'list_notes' %}">List of SmartNotes</a>
-    </div>
+    {% if request.user.is_authenticated %}
+        <div class="my-3 text-center">
+            <a class="btn btn-primary" href="{% url 'list_notes' %}">List of SmartNotes</a>
+        </div>
+    {% endif %}
 {% endblock %}
