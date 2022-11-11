@@ -1,16 +1,14 @@
 from datetime import datetime
 
-from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.models import User
-from django.http import HttpResponseRedirect
-from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView, DeleteView
-from django.contrib.auth.views import LoginView, LogoutView
-from django.views.generic.edit import CreateView
+from django.contrib.auth.views import LogoutView, LoginView
 from django.shortcuts import redirect
+from django.views.generic import TemplateView, ListView, DetailView, UpdateView, DeleteView
+from django.views import View
+from django.views.generic.edit import CreateView
 
 from . import models
-from .forms import NoteForm, SignupForm
+from .forms import NoteForm, SignupForm, LoginForm
 
 
 # Create your views here.
@@ -31,13 +29,13 @@ class LogoutInterfaceView(LogoutView):
 
 class LoginInterfaceView(LoginView):
     template_name = "login.html"
+    # form_class = LoginForm
+    authentication_form = None
     redirect_authenticated_user = True
     fields = "__all__"
+
     redirect_field_name = "redirect_to"
     success_url = "/notes"
-
-    def get_success_url(self):
-        return self.success_url
 
 
 class HomeView(TemplateView):

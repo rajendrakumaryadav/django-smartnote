@@ -1,11 +1,13 @@
 {% extends 'base.html' %}
-
+{% block title %}
+    Login Page :: SmartNotes
+{% endblock %}
 {% block content %}
     <div class="text-center mb-3">
         <form method="POST">
             {% csrf_token %}
             {{ form.as_p }}
-            <input type="submit" value="Login">
+            <input class="btn btn-primary justify-content-end" type="submit" value="Login">
         </form>
     </div>
 {% endblock %}
